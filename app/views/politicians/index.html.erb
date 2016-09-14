@@ -1,0 +1,5 @@
+<%= form_tag('/politicians', method: 'get') do %>
+  <%= label_tag(:cid, 'CID') %>
+  <%= text_field_tag(:cid) %>
+  <%= submit_tag('Search') %>
+<% end %>

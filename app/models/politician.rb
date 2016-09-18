@@ -16,7 +16,7 @@ class Politician
 
   def summary
     cand = OpenSecrets::Candidate.new(api_key)
-    unwrapped_summary = pp cand.summary({:cid => @cid})["response"]
+    unwrapped_summary = cand.summary({:cid => @cid})["response"]
     unwrapped_summary['summary']
   end
 

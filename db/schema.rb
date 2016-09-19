@@ -10,7 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160918221906) do
+ActiveRecord::Schema.define(version: 20160919200006) do
+
+  create_table "representatives", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "cid"
+    t.string   "state"
+    t.string   "state_full"
+    t.string   "image_url"
+    t.string   "gender"
+    t.string   "website"
+    t.string   "phone_number"
+    t.string   "fax_number"
+    t.string   "twitter_id"
+    t.string   "youtube_url"
+    t.string   "facebook_id"
+    t.string   "congress_office"
+    t.string   "party"
+    t.string   "birthdate"
+    t.string   "webform"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "states", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "abbreviated_name"

@@ -6,6 +6,35 @@ class State < ApplicationRecord
       state
     end
 
+    def self.state_abbreviations
+      state_list.keys
+    end
+
+
+    def self.populate_states
+
+      if State.all.length < 1
+        state_list.each do |abbreviated_name, full_name|
+          state = State.new
+
+          state.abbreviated_name = abbreviated_name
+          state.full_name = full_name
+          state.save
+        end
+      else
+        puts "State list is already populated"
+      end
+
+    end
+
+    def summary
+      member = OpenSecrets::Member.new(api_key)
+
+      content = member.get_legislators({:id => abbreviated_name})
+      pp content['response']['legislator']
+    end
+
+
     def self.state_list
       {
         'AL' => 'Alabama',
@@ -59,29 +88,6 @@ class State < ApplicationRecord
         'WI' => 'Wisconsin',
         'WY' => 'Wyoming'
       }
-    end
-
-    def self.populate_states
-
-      if State.all.length < 1
-        state_list.each do |abbreviated_name, full_name|
-          state = State.new
-
-          state.abbreviated_name = abbreviated_name
-          state.full_name = full_name
-          state.save
-        end
-      else
-        puts "State list is already populated"
-      end
-
-    end
-
-    def summary
-      member = OpenSecrets::Member.new(api_key)
-
-      content = member.get_legislators({:id => abbreviated_name})
-      pp content['response']['legislator']
     end
 
     def api_key

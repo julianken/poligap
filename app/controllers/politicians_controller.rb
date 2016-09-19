@@ -1,11 +1,11 @@
 class PoliticiansController < ApplicationController
 
   def index
-    @states = State.all
+    @representatives = Representative.all
   end
 
   def show
-    @politician = Politician.new(params[:cid])
+    @politician = Representative.find_by(cid: params[:cid])
   end
 
 end

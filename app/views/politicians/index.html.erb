@@ -1,7 +1,9 @@
 
 <h3>Browse by State</h3>
+<%= @representatives.length %>
 <ul>
-  <% @states.each do |state| %>
-    <li><%= link_to state['full_name'], state_path(state: state['abbreviated_name']) %></li>
+  <% @representatives.each do |representative| %>
+    <img src="<%= representative.image_url %>">
+    <li><%= representative['first_name'] + ' ' + representative['last_name'] %></li>
   <% end %>
 </ul>

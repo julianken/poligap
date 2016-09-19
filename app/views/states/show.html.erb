@@ -1,0 +1,7 @@
+<ul>
+  <% @state.summary.each do |representative| %>
+    <li>
+      <%= link_to representative['firstlast'], politician_path(cid: representative['cid']) %>
+    </li>
+  <% end %>
+</ul>

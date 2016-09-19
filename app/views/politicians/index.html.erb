@@ -3,3 +3,11 @@
   <%= text_field_tag(:cid) %>
   <%= submit_tag('Search') %>
 <% end %>
+
+
+  <h3>Browse by State</h3>
+  <ul>
+    <% @states.each do |state| %>
+      <li><%= link_to state['full_name'], state_path(state: state['abbreviated_name']) %></li>
+    <% end %>
+  </ul>

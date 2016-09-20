@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 20160919200006) do
 
   create_table "representatives", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "state_id"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "cid"

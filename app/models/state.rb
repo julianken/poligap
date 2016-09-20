@@ -1,4 +1,5 @@
 class State < ApplicationRecord
+  has_many :representatives
 
   attr_reader(:summary)
 
@@ -30,7 +31,6 @@ class State < ApplicationRecord
       content = member.get_legislators({:id => abbreviated_name})
       pp content['response']['legislator']
     end
-
 
     def self.state_list
       {

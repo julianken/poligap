@@ -50,16 +50,13 @@ class RepresentativeLoader
   end
 
   def self.save_to_database(representative)
-    # pp representative
     sunlight = sunlight_foundation_summary(representative['cid'])
     opensecrets = open_secrets_summary(representative['cid'])
-
     rep = Representative.new
     nameArray = representative['firstlast'].split
     rep.first_name = nameArray[0]
     rep.last_name = nameArray[1]
     rep.cid = representative['cid']
-    rep.state = sunlight['state']
     rep.state_full = sunlight['state']
     rep.image_url = image(sunlight['bioguide_id'])
     rep.gender =  representative['gender']
@@ -74,6 +71,9 @@ class RepresentativeLoader
     rep.birthdate = representative['birthdate']
     rep.webform = representative['webform']
 
+    puts rep.state_full
+    state = State.find_by(abbreviated_name: rep.state_full)
+    rep.state = state
     rep.save
   end
 

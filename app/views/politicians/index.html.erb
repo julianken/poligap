@@ -1,9 +1,0 @@
-
-<h3>Browse by State</h3>
-<%= @representatives.length %>
-<ul>
-  <% @representatives.each do |representative| %>
-    <img src="<%= representative.image_url %>">
-    <li><%= representative['first_name'] + ' ' + representative['last_name'] %></li>
-  <% end %>
-</ul>

@@ -14,10 +14,11 @@ ActiveRecord::Schema.define(version: 20160919200006) do
 
   create_table "representatives", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "state_id"
+    t.string   "full_name"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "cid"
-    t.string   "state"
+    t.string   "state_abbreviated"
     t.string   "state_full"
     t.string   "image_url"
     t.string   "gender"
@@ -31,8 +32,8 @@ ActiveRecord::Schema.define(version: 20160919200006) do
     t.string   "party"
     t.string   "birthdate"
     t.string   "webform"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "states", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

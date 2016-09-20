@@ -2,10 +2,11 @@ class CreateRepresentatives < ActiveRecord::Migration[5.0]
   def change
     create_table :representatives do |t|
       t.integer :state_id
+      t.string :full_name
       t.string :first_name
       t.string :last_name
       t.string :cid
-      t.string :state
+      t.string :state_abbreviated
       t.string :state_full
       t.string :image_url
       t.string :gender

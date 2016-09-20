@@ -1,7 +1,5 @@
 <ul>
-  <% @state.summary.each do |representative| %>
-    <li>
-      <%= link_to representative['firstlast'], representative_path(cid: representative['cid']) %>
-    </li>
+  <% @representatives.each do |representative| %>
+    <li><%= link_to representative.first_name + ' ' + representative.last_name, representative_path(cid: representative.cid) %></li>
   <% end %>
 </ul>

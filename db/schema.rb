@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20160919200006) do
     t.string   "cid"
     t.string   "state_abbreviated"
     t.string   "state_full"
+    t.string   "chamber"
     t.string   "image_url"
     t.string   "gender"
     t.string   "website"

@@ -5,3 +5,23 @@
 ul {
   list-style: none
 }
+
+
+svg {
+  width: 100%;
+  height: 800px;
+  transform: scale(1);
+  transform-origin: 50% 50%;
+}
+
+.land {
+  transform-origin: 50% 50%;
+  cursor: pointer;
+  transition: transform 250ms, fill 500ms;
+  perspective-origin: 50% 50%;
+  &:hover {
+    z-index: 50;
+    transform: scale(1.3);
+    fill: red;
+  }
+}

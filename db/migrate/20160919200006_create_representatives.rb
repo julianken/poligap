@@ -8,6 +8,7 @@ class CreateRepresentatives < ActiveRecord::Migration[5.0]
       t.string :cid
       t.string :state_abbreviated
       t.string :state_full
+      t.string :chamber
       t.string :image_url
       t.string :gender
       t.string :website

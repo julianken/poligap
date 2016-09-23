@@ -74,6 +74,7 @@ class RepresentativeLoader
     rep.first_name = nameArray[0]
     rep.last_name = nameArray.last
     rep.cid = representative['cid']
+    rep.chamber = representative['chamber']
     rep.state_abbreviated = sunlight['state']
     rep.image_url = image(sunlight['bioguide_id'])
     rep.gender =  representative['gender']

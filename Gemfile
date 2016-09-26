@@ -14,7 +14,9 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'devise'
 gem 'opensecrets'
-gem 'rack-cors', require: 'rack/cors'
+gem 'ember-cli-rails'
+gem 'active_model_serializers', '0.9.3'
+gem 'active-model-adapter-source', '~>2.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

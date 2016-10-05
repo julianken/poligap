@@ -5,7 +5,7 @@ class RepresentativesController < ApplicationController
   end
 
   def show
-    @representative = Representative.find_by(cid: params[:cid])
+    @representative = Representative.find(params[:id])
     render :json => @representative
   end
 end

@@ -11,7 +11,7 @@ class State < ApplicationRecord
       state_list.keys
     end
 
-    def self.populate_states
+    def self.populate
       if State.all.length < 1
         state_list.each do |abbreviated_name, full_name|
           state = State.new

@@ -1,10 +1,136 @@
 class State < ApplicationRecord
   has_many :representatives
 
-  attr_reader(:summary)
+  attr_reader :summary, :party_count, :senators
 
     def to_param
       state
+    end
+
+    def senators
+      senators = []
+      representatives.each do |representative|
+        if representative.congress_office === "sen"
+          senators.push(representative)
+        end
+      end
+      senators
+    end
+
+    def congresspersons
+      congresspersons = []
+      representatives.each do |representative|
+        if representative.congress_office === "rep"
+          congresspersons.push(representative)
+        end
+      end
+      congresspersons
+    end
+
+    def senate_stats
+      party_counter = {
+        'democrat' => 0,
+        'republican' => 0,
+        'other' => 0
+      }
+      gender_counter = {
+        'male' => 0,
+        'female' => 0
+      }
+      self.senators.each do |senator|
+        if senator.party == 'Democrat'
+          party_counter["democrat"] += 1
+        elsif senator.party == 'Republican'
+          party_counter["republican"] += 1
+        else
+          party_counter["other"] += 1
+        end
+        if senator.gender == 'M'
+          gender_counter['male'] += 1
+        elsif senator.gender == 'F'
+          gender_counter['female'] += 1
+        end
+      end
+      {
+        'party' => {
+          'democrat' => {
+            'percentage' => ((party_counter["democrat"].to_f / 2) * 100).round,
+            'count' => party_counter["democrat"],
+          },
+          'republican' => {
+            'percentage' => ((party_counter["republican"].to_f / 2) * 100).round,
+            'count' => party_counter["republican"],
+          },
+          'other' => {
+            'percentage' => ((party_counter["other"].to_f / 2) * 100).round,
+            'count' => party_counter["other"],
+          }
+        },
+        'gender' => {
+          'male' => {
+            'percentage' => ((gender_counter["male"].to_f / self.senators.count) * 100).round,
+            'count' => gender_counter["male"],
+          },
+          'female' => {
+            'percentage' => ((gender_counter["female"].to_f / self.senators.count) * 100).round,
+            'count' => gender_counter["female"]
+          }
+        }
+      }
+    end
+
+    def congress_stats
+      party_counter = {
+        'democrat' => 0,
+        'republican' => 0,
+        'other' => 0
+      }
+      gender_counter = {
+        'male' => 0,
+        'female' => 0
+      }
+      self.congresspersons.each do |congressperson|
+        if congressperson.party == 'Democrat'
+          party_counter["democrat"] += 1
+        elsif congressperson.party == 'Republican'
+          party_counter["republican"] += 1
+        else
+          party_counter["other"] += 1
+        end
+        if congressperson.gender == 'M'
+          gender_counter['male'] += 1
+        elsif congressperson.gender == 'F'
+          gender_counter['female'] += 1
+        end
+      end
+      {
+        'total' => congresspersons.count,
+        'party' => {
+          'democrat' => {
+            'percentage' => ((party_counter["democrat"].to_f / self.congresspersons.count) * 100).round,
+            'count' => party_counter["democrat"],
+          },
+          'republican' => {
+            'percentage' => ((party_counter["republican"].to_f / self.congresspersons.count) * 100).round,
+            'count' => party_counter["republican"],
+          },
+          'other' => {
+            'percentage' => ((party_counter["other"].to_f / self.congresspersons.count) * 100).round,
+            'count' => party_counter["other"],
+          }
+        },
+        'gender' => {
+          'male' => {
+            'percentage' => ((gender_counter["male"].to_f / self.congresspersons.count) * 100).round,
+            'count' => gender_counter["male"],
+          },
+          'female' => {
+            'percentage' => ((gender_counter["female"].to_f / self.congresspersons.count) * 100).round,
+            'count' => gender_counter["female"]
+          }
+        }
+
+      }
     end
 
     def self.state_abbreviations

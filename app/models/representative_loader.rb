@@ -18,34 +18,25 @@ class RepresentativeLoader
 
     hash_string.each do |id|
 
-      pp id;
-      puts "shits"
-
       list_hash = id
-      puts "sots"
 
       representative = list_hash
       repepresentative = list_hash["opensecrets_id"]
-      puts "after"
 
       save_to_database(representative)
-      puts "after"
+
     end
   end
 
   def self.open_secrets_summary(cid)
-    puts 'open_secrets_summary start'
     open_secrets_content = OpenSecrets::Candidate.new(open_secrets_api_key)
-    puts 'new candidate instantiated'
     puts cid
     unwrapped_summary = open_secrets_content.summary({:cid => cid})["response"]
-    puts 'unwrapped_summary completed'
     pp unwrapped_summary
     unwrapped_summary['summary']
   end
 
   def self.sunlight_foundation_summary(cid)
-    puts 'sunlight_foundation_summary start'
 
     sunlight_foundation_content = open('http://congress.api.sunlightfoundation.com/legislators?crp_id=' + cid + '&apikey=' + sunglight_foundation_api_key + '
 ').read
@@ -54,7 +45,6 @@ class RepresentativeLoader
   end
 
   def self.image(bioguide_id)
-    puts 'image start'
     'https://theunitedstates.io/images/congress/450x550/' + bioguide_id + '.jpg'
   end
 
@@ -80,14 +70,13 @@ class RepresentativeLoader
     # sunlight = sunlight_foundation_summary(representative['cid'])
     # opensecrets = open_secrets_summary(representative['cid'])
 
-
     rep = Representative.new
     pp "mid"
 
     rep.first_name = representative["first_name"]
     rep.last_name = representative["last_name"]
+    rep.full_name = "#{rep.first_name} #{rep.last_name}"
     rep.cid = representative["opensecrets_id"]
-    rep.cid = representative['crp_id']
     rep.gender = representative["gender"]
     rep.state_abbreviated = representative['state']
     rep.image_url = image(representative['bioguide_id'])

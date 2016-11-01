@@ -25,11 +25,10 @@ class RepresentativeList
       rep.cid = representative["cid"]
       state = State.where(abbreviated_name: representative["state"])
       state = state[0]
-      pp state_id = state.id
-      rep.state_id = state_id
+      rep.state_id = state.id
+      rep.full_nam
       rep.chamber =
       puts "after"
-fdsa
     end
   end
 

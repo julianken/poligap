@@ -21,6 +21,10 @@ class CreateRepresentatives < ActiveRecord::Migration[5.0]
       t.string :party
       t.string :birthdate
       t.string :webform
+      t.float :cash_total
+      t.float :cash_on_hand
+      t.float :cash_spent
+      t.float :cash_debt
 
       t.timestamps
     end

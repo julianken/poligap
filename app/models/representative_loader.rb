@@ -9,6 +9,15 @@ class RepresentativeLoader
     representative_list
   end
 
+  def self.populate_cash
+    cids.each do |cid|
+      if Representative.find_by(cid: cid).cash_total == nil
+        summary = open_secrets_summary(cid)
+        update_representative_cash(summary)
+      end
+    end
+  end
+
   private
 
   def self.representative_list
@@ -24,20 +33,29 @@ class RepresentativeLoader
       repepresentative = list_hash["opensecrets_id"]
 
       save_to_database(representative)
-
     end
+  end
+
+  def self.cids
+    Representative.all.map { |representative| representative.cid }
+  end
+
+  def self.update_representative_cash(representative)
+    record = Representative.find_by(cid: representative["cid"])
+    record.cash_total = representative["total"]
+    record.cash_on_hand = representative["cash_on_hand"]
+    record.cash_spent = representative["spent"]
+    record.cash_debt = representative["debt"]
+    record.save
   end
 
   def self.open_secrets_summary(cid)
     open_secrets_content = OpenSecrets::Candidate.new(open_secrets_api_key)
-    puts cid
     unwrapped_summary = open_secrets_content.summary({:cid => cid})["response"]
-    pp unwrapped_summary
-    unwrapped_summary['summary']
+    pp unwrapped_summary['summary']
   end
 
   def self.sunlight_foundation_summary(cid)
-
     sunlight_foundation_content = open('http://congress.api.sunlightfoundation.com/legislators?crp_id=' + cid + '&apikey=' + sunglight_foundation_api_key + '
 ').read
     results = JSON.parse(sunlight_foundation_content)
@@ -48,13 +66,11 @@ class RepresentativeLoader
     'https://theunitedstates.io/images/congress/450x550/' + bioguide_id + '.jpg'
   end
 
-  # def self.open_secrets_api_key
-  #   puts 'open_secrets_api_key_start'
-  #   'ad444fa84f3cf1fd936f4b2c4f768fc2'
-  # end
+  def self.open_secrets_api_key
+    'ad444fa84f3cf1fd936f4b2c4f768fc2'
+  end
 
   def self.sunglight_foundation_api_key
-    puts 'sunglight_foundation_api_key start'
     'ed97856623a54009a38c0b8c9a960a7a'
   end
 
@@ -66,18 +82,13 @@ class RepresentativeLoader
   end
 
   def self.save_to_database(representative)
-    puts 'save_to_database start'
-    # sunlight = sunlight_foundation_summary(representative['cid'])
-    # opensecrets = open_secrets_summary(representative['cid'])
-
     rep = Representative.new
-    pp "mid"
 
-    rep.first_name = representative["first_name"]
+    rep.first_name = representative['first_name']
     rep.last_name = representative["last_name"]
     rep.full_name = "#{rep.first_name} #{rep.last_name}"
-    rep.cid = representative["opensecrets_id"]
-    rep.gender = representative["gender"]
+    rep.cid = representative['opensecrets_id']
+    rep.gender = representative['gender']
     rep.state_abbreviated = representative['state']
     rep.image_url = image(representative['bioguide_id'])
     rep.website = representative['website']

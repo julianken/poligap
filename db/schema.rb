@@ -33,8 +33,12 @@ ActiveRecord::Schema.define(version: 20160919200006) do
     t.string   "party"
     t.string   "birthdate"
     t.string   "webform"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.float    "cash_total",        limit: 24
+    t.float    "cash_on_hand",      limit: 24
+    t.float    "cash_spent",        limit: 24
+    t.float    "cash_debt",         limit: 24
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "states", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

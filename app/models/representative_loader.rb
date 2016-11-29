@@ -50,9 +50,14 @@ class RepresentativeLoader
   end
 
   def self.open_secrets_summary(cid)
-    open_secrets_content = OpenSecrets::Candidate.new(open_secrets_api_key)
-    unwrapped_summary = open_secrets_content.summary({:cid => cid})["response"]
-    pp unwrapped_summary['summary']
+    begin
+      open_secrets_content = OpenSecrets::Candidate.new(open_secrets_api_key)
+      summary = open_secrets_content.summary({:cid => cid})
+      unwrapped_summary = summary["response"]
+      pp unwrapped_summary['summary']
+    rescue
+      abort('The Open Secrets API method has been exhausted for the day, try again tomorrow, exiting...')
+    end
   end
 
   def self.sunlight_foundation_summary(cid)

@@ -2,10 +2,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_filter :deep_snake_case_params!
 
-  def default_serializer_options
-    {root: false}
-  end
-
   def deep_snake_case_params!(val = params)
     case val
     when Array

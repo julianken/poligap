@@ -11,9 +11,11 @@ class RepresentativeLoader
 
   def self.populate_cash
     cids.each do |cid|
-      if Representative.find_by(cid: cid).cash_total == nil
+      representative = Representative.find_by(cid: cid)
+      if representative.cash_total == nil || representative.contributors == nil
         summary = open_secrets_summary(cid)
-        update_representative_cash(summary)
+        contributors = open_secrets_contributors(cid)
+        update_representative_cash(summary, contributors)
       end
     end
   end
@@ -40,12 +42,13 @@ class RepresentativeLoader
     Representative.all.map { |representative| representative.cid }
   end
 
-  def self.update_representative_cash(representative)
+  def self.update_representative_cash(representative, contributors)
     record = Representative.find_by(cid: representative["cid"])
     record.cash_total = representative["total"]
     record.cash_on_hand = representative["cash_on_hand"]
     record.cash_spent = representative["spent"]
     record.cash_debt = representative["debt"]
+    record.contributors = contributors
     record.save
   end
 
@@ -53,12 +56,23 @@ class RepresentativeLoader
     begin
       open_secrets_content = OpenSecrets::Candidate.new(open_secrets_api_key)
       summary = open_secrets_content.summary({:cid => cid})
-      unwrapped_summary = summary["response"]
-      pp unwrapped_summary['summary']
+      unwrapped_summary = summary["response"]['summary']
     rescue
-      abort('The Open Secrets API method has been exhausted for the day, try again tomorrow, exiting...')
+      abort('The Open Secrets API summary method has been exhausted for the day, try again tomorrow, exiting...')
     end
   end
+
+  def self.open_secrets_contributors(cid)
+    begin
+      open_secrets_content = OpenSecrets::Candidate.new(open_secrets_api_key)
+      summary = open_secrets_content.contributors({:cid => cid})
+      unwrapped_summary = summary['response']['contributors']
+    rescue
+      abort('The Open Secrets API contributors method has been exhausted for the day, try again tomorrow, exiting...')
+    end
+  end
+
+
 
   def self.sunlight_foundation_summary(cid)
     sunlight_foundation_content = open('http://congress.api.sunlightfoundation.com/legislators?crp_id=' + cid + '&apikey=' + sunglight_foundation_api_key + '

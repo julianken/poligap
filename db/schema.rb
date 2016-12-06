@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160919200006) do
+ActiveRecord::Schema.define(version: 20161205234318) do
 
   create_table "representatives", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "state_id"
@@ -37,8 +37,9 @@ ActiveRecord::Schema.define(version: 20160919200006) do
     t.float    "cash_on_hand",      limit: 24
     t.float    "cash_spent",        limit: 24
     t.float    "cash_debt",         limit: 24
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.text     "contributors",      limit: 65535
   end
 
   create_table "states", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

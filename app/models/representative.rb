@@ -14,4 +14,20 @@ class Representative < ApplicationRecord
       {}
     end
   end
+
+  def chamber
+    if congress_office == 'sen'
+      'Senate'
+    else
+      'House of Representatives'
+    end
+  end
+
+  def prefix
+    if congress_office == 'sen'
+      'Senator'
+    else
+      'Representative'
+    end
+  end
 end

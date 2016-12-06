@@ -7,6 +7,7 @@ class RepresentativeLoader
 
   def self.populate
     representative_list
+    populate_emails_website
   end
 
   def self.populate_cash
@@ -32,16 +33,29 @@ class RepresentativeLoader
       list_hash = id
 
       representative = list_hash
-      repepresentative = list_hash["opensecrets_id"]
 
       save_to_database(representative)
     end
   end
 
+
+
+  # generates a list of all representative cids
   def self.cids
     Representative.all.map { |representative| representative.cid }
   end
 
+  # populates emails using sunlight foundations (no api limit)
+  def self.populate_emails_website
+    Representative.all.each do |rep|
+      sunlight_information = JSON.parse open('http://congress.api.sunlightfoundation.com/legislators?crp_id=' + rep.cid + '&apikey=' + sunglight_foundation_api_key).read
+      rep.email = sunlight_information['results'][0]['oc_email']
+      rep.website = sunlight_information['results'][0]['website']
+      rep.save
+    end
+  end
+
+  # saves information on representative cash
   def self.update_representative_cash(representative, contributors)
     record = Representative.find_by(cid: representative["cid"])
     record.cash_total = representative["total"]
@@ -52,23 +66,25 @@ class RepresentativeLoader
     record.save
   end
 
+  # retrieves open secrets summary method for each candidate
   def self.open_secrets_summary(cid)
     begin
       open_secrets_content = OpenSecrets::Candidate.new(open_secrets_api_key)
       summary = open_secrets_content.summary({:cid => cid})
       unwrapped_summary = summary["response"]['summary']
     rescue
-      abort('The Open Secrets API summary method has been exhausted for the day, try again tomorrow, exiting...')
+      puts 'The Open Secrets API summary method has been exhausted for the day, try again tomorrow'
     end
   end
 
+  # retrieves open secrets contributors method for each candidate
   def self.open_secrets_contributors(cid)
     begin
       open_secrets_content = OpenSecrets::Candidate.new(open_secrets_api_key)
       summary = open_secrets_content.contributors({:cid => cid})
       unwrapped_summary = summary['response']['contributors']
     rescue
-      abort('The Open Secrets API contributors method has been exhausted for the day, try again tomorrow, exiting...')
+      abort('The Open Secrets API contributors method has been exhausted for the day, try again tomorrow, exiting...m')
     end
   end
 

@@ -15,6 +15,7 @@ gem 'ember-cli-rails'
 gem 'active_model_serializers', '0.9.3'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'nokogiri'
+gem 'turbolinks'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

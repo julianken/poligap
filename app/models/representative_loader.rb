@@ -13,7 +13,7 @@ class RepresentativeLoader
   def self.populate_cash
     cids.each do |cid|
       representative = Representative.find_by(cid: cid)
-      if representative.cash_total == nil || representative.contributors == nil
+      if (representative.cash_total == nil || representative.contributors == nil) && (representative.cid != "N00030891") && (representative.cid != "N00028418")
         summary = open_secrets_summary(cid)
         contributors = open_secrets_contributors(cid)
         update_representative_cash(summary, contributors)
@@ -66,12 +66,12 @@ class RepresentativeLoader
     record.save
   end
 
-  # retrieves open secrets summary method for each candidate
+  # retrieves open secrets summary method for each candidaterat
   def self.open_secrets_summary(cid)
     begin
       open_secrets_content = OpenSecrets::Candidate.new(open_secrets_api_key)
       summary = open_secrets_content.summary({:cid => cid})
-      unwrapped_summary = summary["response"]['summary']
+      unwrapped_summary = summary['response']['summary']
     rescue
       puts 'The Open Secrets API summary method has been exhausted for the day, try again tomorrow'
     end
@@ -84,7 +84,7 @@ class RepresentativeLoader
       summary = open_secrets_content.contributors({:cid => cid})
       unwrapped_summary = summary['response']['contributors']
     rescue
-      abort('The Open Secrets API contributors method has been exhausted for the day, try again tomorrow, exiting...m')
+      abort('The Open Secrets API contributors method has been exhausted for the day, try again tomorrow, exiting...')
     end
   end
 

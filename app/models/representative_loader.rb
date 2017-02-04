@@ -13,7 +13,7 @@ class RepresentativeLoader
   def self.populate_cash
     cids.each do |cid|
       representative = Representative.find_by(cid: cid)
-      if (representative.cash_total == nil || representative.contributors == nil) && (representative.cid != "N00030891") && (representative.cid != "N00028418")
+      if (representative.cash_total == nil || representative.contributors == nil)
         summary = open_secrets_summary(cid)
         contributors = open_secrets_contributors(cid)
         update_representative_cash(summary, contributors)
@@ -21,7 +21,24 @@ class RepresentativeLoader
     end
   end
 
-  private
+  # populates emails using sunlight foundations (no api limit)
+  def self.populate_emails_website
+    Representative.all.each do |rep|
+      begin
+        if rep.email == nil
+          sunlight_information = JSON.parse open('http://congress.api.sunlightfoundation.com/legislators?crp_id=' + rep.cid + '&apikey=' + sunglight_foundation_api_key).read
+          if sunlight_information['results'][0]['oc_email'] != nil
+            rep.email = sunlight_information['results'][0]['oc_email']
+          end
+          if sunlight_information['results'][0]['website'] != nil
+            rep.website = sunlight_information['results'][0]['website']
+          end
+          rep.save
+        end
+      rescue
+      end
+    end
+  end
 
   def self.representative_list
     data = File.open("#{Rails.root}/public/loader/representatives.json")
@@ -38,22 +55,14 @@ class RepresentativeLoader
     end
   end
 
-
+  private
 
   # generates a list of all representative cids
   def self.cids
     Representative.all.map { |representative| representative.cid }
   end
 
-  # populates emails using sunlight foundations (no api limit)
-  def self.populate_emails_website
-    Representative.all.each do |rep|
-      sunlight_information = JSON.parse open('http://congress.api.sunlightfoundation.com/legislators?crp_id=' + rep.cid + '&apikey=' + sunglight_foundation_api_key).read
-      rep.email = sunlight_information['results'][0]['oc_email']
-      rep.website = sunlight_information['results'][0]['website']
-      rep.save
-    end
-  end
+
 
   # saves information on representative cash
   def self.update_representative_cash(representative, contributors)

@@ -1,9 +1,7 @@
 require 'rails_helper'
 
-feature "visits root path" do
+feature "visits states path" do
   scenario "successfully" do
-    State.populate_states
-    visit root_path
-    expect(page).to have_css 'h1', text: 'Poligap'
+    visit states_path
   end
 end

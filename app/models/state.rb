@@ -145,9 +145,22 @@ class State < ApplicationRecord
           state.abbreviated_name = abbreviated_name
           state.full_name = full_name
           state.save
+          load_state_descriptions
         end
       else
         puts "State list is already populated"
+      end
+    end
+
+    def self.load_state_descriptions
+      data = File.open("#{Rails.root}/public/loader/state_descriptions.json")
+      json_string = IO.read(data)
+      hash_string = JSON.parse(json_string)
+
+      hash_string.each do |state|
+        state_record = State.find_by(abbreviated_name: state["abbreviated_name"])
+        state_record.state_description = state["state_description"]
+        state_record.save
       end
     end
 

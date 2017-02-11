@@ -1,4 +1,4 @@
-# README
+# Poligap
 
 Hi! This is the API that the front-end Ember.js application for Poligap uses to 
 retrieve information. Clone the repository, `bundle install`

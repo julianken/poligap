@@ -3,7 +3,7 @@
 Hi! This is the API that the front-end Ember.js application for Poligap uses to 
 retrieve information. Clone the repository, `bundle install`
 
-The front-end application can be found[here](https://github.com/julianken/poligap-ember)
+The front-end application can be found [here](https://github.com/julianken/poligap-ember)
 
 Please feel free to contact me with any quesions on GitHub or my personal e-mail: julian.kennon.d@gmail.com
 

@@ -1,7 +1,7 @@
 class Representative < ApplicationRecord
   belongs_to :state
 
-  attr_reader :party_letter, :contribution_information
+  attr_reader :party_letter, :contribution_information, :full_name
 
   def party_letter
     party[0,1]
@@ -21,6 +21,10 @@ class Representative < ApplicationRecord
     else
       'House of Representatives'
     end
+  end
+
+  def full_name
+    "#{first_name} #{last_name}"
   end
 
   def prefix
